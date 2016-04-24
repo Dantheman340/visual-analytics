@@ -38,23 +38,18 @@
             yMap = function(d) { return yScale(yValue(d));}, // data -> display
             yAxis = d3.svg.axis().scale(yScale).orient("left");
 
-    // setup fill color
-    var cValue = function(d) { return d.POResCode;},
-            color = d3.scale.category10();
-
-
 
     // add the graph canvas to the body of the webpage
-//    var svg = d3.select("#plot").append("svg")
-//            .attr("width", width + margin.left + margin.right)
-//            .attr("height", height + margin.top + margin.bottom)
- //           .append("g")
-   //         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var svgplot = d3.select("#plot").append("svgplot")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // add the tooltip area to the webpage
-//    var tooltip = d3.select("#plot").append("div")
-  //          .attr("class", "tooltip")
-    //        .style("opacity", 0);
+    var tooltip = d3.select("#plot").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
 
     var x = d3.scale.linear()
             .range([0, width]);
@@ -70,15 +65,18 @@
 
     var g_data;
 
-    d3.csv("BaseballData.csv", function(error, data) {
+    var cValue = function(d) { return d.POResCode;},
+            color = d3.scale.category10();
+
+    d3.csv("data/BaseballData.csv", function(error, data) {
         if (error) throw error;
 
         data.forEach(function(d) {
-            d.PayKey= +d.PayKey;
+            PayKey= d.PayKey;
             d.Year= +d.Year;
             d.Payroll= +d.Payroll;
-            d.Abbrev= +d.Abbrev;
-            d.PORes= +d.PORes;
+            Abbrev= +d.Abbrev;
+            PORes= +d.PORes;
             d.POResCode= +d.POResCode;
             d.RegSeasonW= +d.RegSeasonW;
             d.Batters= +d.Batters;
@@ -141,10 +139,15 @@
             g_data= data;}
         );
 
-        x.domain(d3.extent(data, function(d) { return d.R; })).nice();
-        y.domain(d3.extent(data, function(d) { return d.pR; })).nice();
 
-         svg.append("g")
+     //   xScale.domain([d3.min(g_data, xValue)-1, d3.max(g_data, xValue)+1]);
+     //   yScale.domain([d3.min(g_data, yValue)-1, d3.max(g_data, yValue)+1]);
+    console.log(data[0]);
+
+    xScale.domain(d3.extent(data, function(d) { return d.R; })).nice();
+    yScale.domain(d3.extent(data, function(d) { return d.pR; })).nice();
+
+    svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
                 .call(xAxis)
@@ -157,7 +160,7 @@
 
 
 
-        svg.append("g")
+    svg.append("g")
                 .attr("class", "y axis")
                 .call(yAxis)
                 .append("text")
@@ -168,19 +171,40 @@
                 .style("text-anchor", "end")
                 .text(yLabel);
 
-        svg.selectAll(".dot")
+    svg.selectAll(".dot")
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
                 .attr("cx", function(d) { return x(d.R); })
                 .attr("cy", function(d) { return y(d.pR); })
-               // .style("fill", function(d) { return color})
-               // .attr("r", function(d){return (d.Payroll/10000000)})
+                .style("fill", function(d) { return color(cValue(d));})
+
+                .on("mouseover", function(d) {
+                    d3.select(this).style("fill", "black");
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                        console.log(d["PayKey"]);
+                    tooltip.html(d["PayKey"] + "<br/> (" + xValue(d)
+                                + ", " + yValue(d) + ")")
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+            })
+                .on("mouseout", function(d) {
+                d3.select(this).style("fill", color(cValue(d)));
+                tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+            })
+
+
+
+              //  .attr("r", function(d){return (d.Payroll/10000000)})
               //  .attr("stroke","black")
-             //   .attr("stroke-width", "2"); });
+              //  .attr("stroke-width", "2");
 
 
-        var legend = svg.selectAll(".legend")
+    var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")
                 .attr("class", "legend")
@@ -199,8 +223,7 @@
                 .attr("dy", ".35em")
                 .style("text-anchor", "end");
                 //.text(function(d) { return d.POResCode; });
-
-    });
+    })
 
 </script>
 
@@ -226,7 +249,6 @@ Y-Axis:
 <script>
     function changeXAxis(elem) {
         console.log(elem);
-        console.log("Color is "+ color);
         // d3.select("#xlabel").text(elem);
         xLabel = elem;
         xScale.domain([d3.min(g_data, xValue) - 1, d3.max(g_data, xValue) + 1]);
@@ -260,8 +282,5 @@ Y-Axis:
 </script>
 
 <br>
-
-
-
 
 </body>
