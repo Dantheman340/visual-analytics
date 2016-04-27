@@ -72,11 +72,11 @@
         if (error) throw error;
 
         data.forEach(function(d) {
-            PayKey= d.PayKey;
+            //PayKey= d.PayKey;
             d.Year= +d.Year;
             d.Payroll= +d.Payroll;
-            Abbrev= +d.Abbrev;
-            PORes= +d.PORes;
+            //Abbrev= +d.Abbrev;
+            //PORes= +d.PORes;
             d.POResCode= +d.POResCode;
             d.RegSeasonW= +d.RegSeasonW;
             d.Batters= +d.Batters;
@@ -143,6 +143,8 @@
      //   xScale.domain([d3.min(g_data, xValue)-1, d3.max(g_data, xValue)+1]);
      //   yScale.domain([d3.min(g_data, yValue)-1, d3.max(g_data, yValue)+1]);
     console.log(data[0]);
+    console.log(["PayKey"]);
+
 
     xScale.domain(d3.extent(data, function(d) { return d.R; })).nice();
     yScale.domain(d3.extent(data, function(d) { return d.pR; })).nice();
@@ -180,7 +182,8 @@
                 .style("fill", function(d) { return color(cValue(d));})
 
                 .on("mouseover", function(d) {
-                    d3.select(this).style("fill", "black");
+                    d3.select(this).style("fill", "yellow")
+                            .style("stroke", "black");
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
@@ -191,7 +194,8 @@
                         .style("top", (d3.event.pageY - 28) + "px");
             })
                 .on("mouseout", function(d) {
-                d3.select(this).style("fill", color(cValue(d)));
+                d3.select(this).style("fill", color(cValue(d)))
+                        .style("stroke","black");
                 tooltip.transition()
                         .duration(500)
                         .style("opacity", 0);
@@ -203,8 +207,9 @@
               //  .attr("stroke","black")
               //  .attr("stroke-width", "2");
 
+        var leglabels = [ "Missed Playoffs", "Playoffs - LCS", "Playoffs - LDS", "Playoffs-Won World Series", "Lost World Series", "Playoffs - Wild Card"];
 
-    var legend = svg.selectAll(".legend")
+         var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")
                 .attr("class", "legend")
@@ -215,14 +220,14 @@
                 .attr("x", width - 18)
                 .attr("width", 18)
                 .attr("height", 18)
-                .style("fill", "blue");
+                .style("fill", color);
 
         legend.append("text")
                 .attr("x", width - 24)
                 .attr("y", 9)
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
-                .text("testing");
+                .text(function(d,i){ return leglabels[i]});
     })
 
 </script>
