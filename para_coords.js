@@ -1,16 +1,41 @@
 /**
  * Created by Dan J. on 4/24/2016.
  */
+// gradstop.js - color gradients!
+//initializing variables
+var g_data;
+var pc1;
+var selected_year = 2015;
 
+//setting gradient values
+//var gradient_max = d3.max(g_data.document.getElementById("gradient_filter").value);
+//var gradient_min = d3.min(g_data.document.getElementById("gradient_filter").value);
+
+//color scale variable for gradient
 var color_scale = d3.scale.linear()
-    // .domain([data.min([g_data.HR]), data.max([g_data.HR])])
+    //.domain([data.min([g_data.HR]), data.max([g_data.HR])])
     .domain([100,250])
     .range(["red", "green"])
     .interpolate(d3.interpolateLab);
 
-var pc1;
-var g_data;
-var selected_year = 2015;
+function loadParset(){
+    pc1 = d3.parcoords()("#para_coords")
+        .data(g_data.filter(function(d){
+            if(selected_year === "All") {
+                return d
+            }else{
+                return d.Year == selected_year
+            }}))
+        .hideAxis(["Year","PayKey","Payroll","Abbrev"])
+        .composite("darken")
+        .color(function(d) { return color_scale(d["HR"]); })  // quantitative color scale
+        .alpha(0.35)
+        .render()
+        .brushMode("1D-axes")  // enable brushing
+        .alphaOnBrushed(0.30)
+        .interactive()  // command line mode
+        .reorderable(); // enables reordering
+}
 
 d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
 
@@ -26,22 +51,14 @@ d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
         });
 
     g_data = data;
-//    console.log(g_data[0].Year);
 
-    pc1 = d3.parcoords()("#para_coords")
-        .data(data.filter(function(d){return d.Year == selected_year}))
-        .hideAxis(["Year","PayKey","Payroll","Abbrev"])
-        .composite("darken")
-        .color(function(d) { return color_scale(d["HR"]); })  // quantitative color scale
-        .alpha(0.35)
-        .render()
-        .brushMode("1D-axes")  // enable brushing
-        .interactive()  // command line mode
+    loadParset();
 
+    //building custom team list - work in progress
     d3.select("#team-list")
         .data(data)
         .enter()
-        .append("table")
+        .append("table");
 
     var explore_count = 0;
     var exploring = {};
@@ -80,3 +97,4 @@ d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
     };
 
 });
+

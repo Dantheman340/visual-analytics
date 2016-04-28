@@ -12,12 +12,14 @@
 <script src="para_coords.js"></script>
 <script src="js/d3.parcoords.js"></script>
 
-<div id="title" class="title">MLB parallel coordinate graph!<br></div>
+<div id="title" class="title">MLB parallel coordinate graph<br></div>
 
 <div id="para_coords" class="parcoords" style="width:1000px;height:350px"></div>
 
+<div id = "filters">
 <b>Year:</b>
 <select onchange="changeYear(this.value);" id="year_filter">
+    <option value="All">All years</option>
     <option value="2015" selected>2015</option>
     <option value="2014">2014</option>
     <option value="2013">2013</option>
@@ -38,7 +40,6 @@
     <option value="1998">1998</option>
 </select>
 
-<div id = "gradient"></div>
 <b>Gradient variable:</b>
 <select onchange="changeGradient(this.value);" id="gradient_filter">
     <option value="HR" selected>HR</option>
@@ -47,15 +48,18 @@
     <option value="SLG">SLG</option>
     <option value="pFIP">pFIP</option>
 </select>
+</div>
 
 <div id="team-list"></div>
 
 <script>
+    //var selected_year = document.getElementById("year_filter").value;
 
     function changeYear(input){
         var year = input;
         selected_year = year;
-        console.log(selected_year);
+        d3.select("#para_coords").html("");
+        loadParset();
 //        d3.selectAll("#para_coords")
 //            .data(g_data)
 //            .enter()
