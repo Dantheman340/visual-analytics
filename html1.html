@@ -25,14 +25,14 @@
             width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
     // setup x
-    var xLabel = "R";
+    var xLabel = "RperG";
     var xValue = function(d) { return d[xLabel];}, // data -> value
             xScale = d3.scale.linear().range([0, width]), // value -> display
             xMap = function(d) { return xScale(xValue(d));}, // data -> display
             xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
     // setup y
-    var yLabel = "pR";
+    var yLabel = "RunsAgperG";
     var yValue = function(d) { return d[yLabel];}, // data -> value
             yScale = d3.scale.linear().range([height, 0]), // value -> display
             yMap = function(d) { return yScale(yValue(d));}, // data -> display
@@ -142,12 +142,18 @@
 
      //   xScale.domain([d3.min(g_data, xValue)-1, d3.max(g_data, xValue)+1]);
      //   yScale.domain([d3.min(g_data, yValue)-1, d3.max(g_data, yValue)+1]);
-    console.log(data[0]);
-    console.log(["PayKey"]);
 
+    console.log(g_data[1].Year);
 
-    xScale.domain(d3.extent(data, function(d) { return d.R; })).nice();
-    yScale.domain(d3.extent(data, function(d) { return d.pR; })).nice();
+//    var g_filt = g_data.filter(yearfilter);
+//    console.log(g_filt[1].Year);
+
+//    function yearfilter(d) {
+//            return g_data[d].Year == 1998;
+//        }
+
+    xScale.domain(d3.extent(data, function(d) { return d.RperG; })).nice();
+    yScale.domain(d3.extent(data, function(d) { return d.RunsAgperG; })).nice();
 
     svg.append("g")
                 .attr("class", "x axis")
@@ -236,19 +242,33 @@
 
 X-Axis:
 <select onchange="changeXAxis(this.value);">
-    <option value="R" selected>Runs Scored</option>
-    <option value="pR" >Runs Against</option>
+    <option value="RperG" selected>Runs Scored per game</option>
+    <option value="RunsAgperG" >Runs Allowed per game</option>
     <option value="SO" >Strikeouts-Batting</option>
     <option value="pSO" >Strikeouts-Pitching</option>
+    <option value="BatAge" >Average Batter Age(weighted)</option>
+    <option value="HR" >Home Runs</option>
+    <option value="OPSplus" >On Base + Slugging (Park adjusted, standardized)</option>
+    <option value="PAge" >Average Pitcher Age(weighted)</option>
+    <option value="ERA" >Earned Run Average</option>
+    <option value="pFIP" >Fielding Independent Pitching</option>
 </select>
 Y-Axis:
 <select onchange="changeYAxis();" id="yAxisMenu">
-    <option value="R" >Runs Scored</option>
-    <option value="pR" selected>Runs Against</option>
+    <option value="RperG" selected>Runs Scored per game</option>
+    <option value="RunsAgperG" >Runs Allowed per game</option>
     <option value="SO" >Strikeouts-Batting</option>
     <option value="pSO" >Strikeouts-Pitching</option>
+    <option value="BatAge" >Average Batter Age(weighted)</option>
+    <option value="HR" >Home Runs</option>
+    <option value="OPSplus" >On Base + Slugging (Park adjusted, standardized)</option>
+    <option value="PAge" >Average Pitcher Age(weighted)</option>
+    <option value="ERA" >Earned Run Average</option>
+    <option value="pFIP" >Fielding Independent Pitching</option>
 </select>
 
+<button onclick="animator();" type="button" >Animate</button>
+<button onclick="reset();" type="button" >Reset</button>
 <br>
 
 <script>
@@ -256,7 +276,7 @@ Y-Axis:
         console.log(elem);
         // d3.select("#xlabel").text(elem);
         xLabel = elem;
-        xScale.domain([d3.min(g_data, xValue) - 1, d3.max(g_data, xValue) + 1]);
+        xScale.domain([d3.min(g_data, xValue) -.5, d3.max(g_data, xValue) +.5]);
         svg.selectAll(".x.axis")
                 .call(xAxis).select(".label").text(xLabel);
         changePos();
@@ -267,7 +287,7 @@ Y-Axis:
         console.log(a);
         yLabel = a;
         // d3.select("#ylabel").text(x);
-        yScale.domain([d3.min(g_data, yValue)-1, d3.max(g_data, yValue)+1]);
+        yScale.domain([d3.min(g_data, yValue) -.5, d3.max(g_data, yValue) +.5]);
         svg.selectAll(".y.axis")
                 .call(yAxis).select(".label").text(yLabel);
         changePos();
@@ -280,9 +300,77 @@ Y-Axis:
                 .attr("cy", yMap)
                 .attr("r", function(d){return (d.Payroll/10000000)})
                 .attr("stroke","black")
-                .attr("stroke-width", "2")
-                .attr("fill","red");
+                .attr("stroke-width", "2");
+               // .attr("fill","red");
     }
+
+    function animator() {
+
+/*        svg.selectAll("circle")
+                .transition()
+                .duration(500)
+                .attr("cx", xMap)
+                .attr("cy", yMap)
+                .attr("r", function(d){return (d.Payroll/10000000)})
+                .style("opacity", ".2")
+                .style("stroke", "white");
+
+        svg.selectAll("circle")
+                    .transition()
+                    .duration(500)
+                    .ease("linear")
+                    .filter(function (d) {
+                      return d.Year == 1998;}
+                    .style("opacity","1")
+                    .style("fill", function(d){return color(cValue(d));}));
+                }
+*/
+        for (i=1998; i<2016; i++) {
+            svg.selectAll("circle")
+                    .transition()
+                    .duration(10)
+                    .ease("linear")
+                    .delay(function(d,i){return i*20})
+                    .filter(function (d) {
+                      return d.Year != i;})
+                    .style("opacity",".1");
+
+            console.log(i);
+
+            svg.selectAll("circle")
+                      .transition()
+                      .duration(10)
+                      .ease("linear")
+                      .delay(function(d,i){return 10+i*20})
+                      .filter(function (d) {
+                          return d.Year == i;})
+                        //.style("fill", function(d){return color(cValue(d));})
+                        .style("opacity","1");}
+         //   });
+     //       console.log(i);
+
+
+
+        //for (i = 1998; i < 2016; i++) {
+        //    If g_data[].Year === value;
+//
+  //          console.log(g_data[1].Year + " in filter func");
+    //        g_filt = g_data.filter(yearfilter);
+      //      //console.log(g_data[i].Year + "  " + i);
+        //    //console.log(g_filt);
+
+//        }
+    function yearfilter(d) {
+            return g_data[d].Year == 1998;
+        }
+    }
+
+    function reset() {
+        svg.selectAll("circle")
+                .style("opacity","1");
+
+    }
+
 
 </script>
 
