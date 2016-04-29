@@ -5,18 +5,41 @@
 //initializing variables
 var g_data;
 var pc1;
-var selected_year = 2015;
+var selected_year = "All";
+var gradient_selected = "HR";
 
 //setting gradient values
-//var gradient_max = d3.max(g_data.document.getElementById("gradient_filter").value);
-//var gradient_min = d3.min(g_data.document.getElementById("gradient_filter").value);
+var gradient_min = 100;
+var gradient_max = 250;
 
 //color scale variable for gradient
+
 var color_scale = d3.scale.linear()
-    //.domain([data.min([g_data.HR]), data.max([g_data.HR])])
-    .domain([100,250])
-    .range(["red", "green"])
+    .domain([gradient_min,gradient_max])
+    .range(["yellow", "blue"])
     .interpolate(d3.interpolateLab);
+
+function minVal(){
+    var minList = [];
+    for(i=0;i < g_data.length; i++){
+        minList.push(g_data[i][gradient_selected]);
+    }
+    var sortedList1 = minList.sort(function(a, b){return a-b});
+    gradient_min = sortedList1[0];
+    console.log(gradient_min);
+    return gradient_min;
+}
+
+function maxVal(){
+    var maxList = [];
+    for(i=0;i < g_data.length; i++){
+        maxList.push(g_data[i][gradient_selected]);
+    }
+    var sortedList2 = maxList.sort(function(a, b){return b-a});
+    gradient_max = sortedList2[0];
+    console.log(gradient_max);
+    return gradient_max;
+}
 
 function loadParset(){
     pc1 = d3.parcoords()("#para_coords")
@@ -28,7 +51,7 @@ function loadParset(){
             }}))
         .hideAxis(["Year","PayKey","Payroll","Abbrev"])
         .composite("darken")
-        .color(function(d) { return color_scale(d["HR"]); })  // quantitative color scale
+        .color(function(d){ return color_scale(d[gradient_selected]);})  // quantitative color scale
         .alpha(0.35)
         .render()
         .brushMode("1D-axes")  // enable brushing
