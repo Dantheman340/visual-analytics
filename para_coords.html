@@ -14,7 +14,7 @@
 
 <div id="title" class="title">MLB parallel coordinate graph<br></div>
 
-<div id="para_coords" class="parcoords" style="width:1000px;height:350px"></div>
+<div id="para_coords" class="parcoords" style="width:1300px;height:350px"></div>
 
 <div id = "filters">
 <b>Year:</b>
@@ -53,24 +53,18 @@
 <div id="team-list"></div>
 
 <script>
-    //var selected_year = document.getElementById("year_filter").value;
 
     function changeYear(input){
         var year = input;
         selected_year = year;
         console.log(selected_year);
         d3.select("#para_coords").html("");
-        loadParset();
+        initializeGraph();
     }
 
     function changeGradient(input){
         gradient_selected = input;
-        console.log(gradient_selected);
-        console.log(gradient_min);
-        console.log(gradient_max);
-        minVal();
-        maxVal();
-        loadParset();
+        initializeGraph();
     }
 </script>
 

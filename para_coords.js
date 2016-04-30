@@ -8,17 +8,26 @@ var pc1;
 var selected_year = "All";
 var gradient_selected = "HR";
 
-//setting gradient values
-var gradient_min = 100;
-var gradient_max = 250;
-
 //color scale variable for gradient
-
 var color_scale = d3.scale.linear()
-    .domain([gradient_min,gradient_max])
-    .range(["yellow", "blue"])
-    .interpolate(d3.interpolateLab);
 
+//central function to control order of operations and condense code
+function initializeGraph(){
+    minVal();
+    maxVal();
+    create_color_scale();
+    loadParset();
+}
+
+//pull color_scale variable and reset gradient based on user defined variable
+function create_color_scale(){
+    color_scale
+        .domain([gradient_min,gradient_max])
+        .range(["yellow", "blue"])
+        .interpolate(d3.interpolateLab);
+}
+
+//iterate through data based on user selected variable and find minimum value
 function minVal(){
     var minList = [];
     for(i=0;i < g_data.length; i++){
@@ -26,10 +35,10 @@ function minVal(){
     }
     var sortedList1 = minList.sort(function(a, b){return a-b});
     gradient_min = sortedList1[0];
-    console.log(gradient_min);
     return gradient_min;
 }
 
+//iterate through data based on user selected variable and find maximum value
 function maxVal(){
     var maxList = [];
     for(i=0;i < g_data.length; i++){
@@ -37,10 +46,10 @@ function maxVal(){
     }
     var sortedList2 = maxList.sort(function(a, b){return b-a});
     gradient_max = sortedList2[0];
-    console.log(gradient_max);
     return gradient_max;
 }
 
+//creates parallel coordinate visualization
 function loadParset(){
     pc1 = d3.parcoords()("#para_coords")
         .data(g_data.filter(function(d){
@@ -49,7 +58,7 @@ function loadParset(){
             }else{
                 return d.Year == selected_year
             }}))
-        .hideAxis(["Year","PayKey","Payroll","Abbrev"])
+        .hideAxis(["Year","PayKey","Abbrev"])
         .composite("darken")
         .color(function(d){ return color_scale(d[gradient_selected]);})  // quantitative color scale
         .alpha(0.35)
@@ -60,6 +69,7 @@ function loadParset(){
         .reorderable(); // enables reordering
 }
 
+//load data set, create brushing functionality
 d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
 
     //data conversion from string to number
@@ -75,7 +85,7 @@ d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
 
     g_data = data;
 
-    loadParset();
+    initializeGraph();
 
     //building custom team list - work in progress
     d3.select("#team-list")
