@@ -45,8 +45,9 @@ var svg = d3.select("#line").append("svg")
 var dataYear = function (d) {
     return +d.Year;
 };
-var new_data = [[], [], []];
 
+var new_data = [[], []];
+//var new_data = [[], [], []];
 var focus = svg.append("g")
     .style("display", "none");
 
@@ -150,6 +151,7 @@ d3.csv("data/BaseballData.csv", function (error, data) {
 
     var color = ["steelblue", "red"];
     var name = ["team", "number of Home Runs", "something else"];
+
     for (var i = 0; i < 2; i++) {
         svg.append("path")
             .datum(new_data[i])
