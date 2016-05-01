@@ -3,13 +3,17 @@
  */
 // gradstop.js - color gradients!
 //initializing variables
-var g_data;
-var pc1;
-var selected_year = "All";
-var gradient_selected = "HR";
+var g_data,
+    pc1,
+    selected_year = "All",
+    gradient_selected = "HR",
+    width = 1300,
+    height = 350;
 
 //color scale variable for gradient
-var color_scale = d3.scale.linear()
+var color_scale = d3.scale.linear(),
+    xScale = d3.scale.linear().range([0, width]),
+    yScale = d3.scale.linear().range([height, 0]);
 
 //central function to control order of operations and condense code
 function initializeGraph(){
@@ -23,7 +27,7 @@ function initializeGraph(){
 function create_color_scale(){
     color_scale
         .domain([gradient_min,gradient_max])
-        .range(["yellow", "blue"])
+        .range(["red", "green"])
         .interpolate(d3.interpolateLab);
 }
 
@@ -87,15 +91,66 @@ d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
 
     initializeGraph();
 
-    //building custom team list - work in progress
-    d3.select("#team-list")
+/*begin new code for highlighting*/
+/*
+    var line = d3.svg.line()
+        .defined(function(d) { return !isNaN(d[1]); });
+
+    var x = d3.scale.ordinal()
+        .domain(g_data.map(function(d) { return d.name; }))
+        .range([0, width]);
+
+    var dimension = pc1.svg.selectAll(".dimension")
+        .data(g_data)
+        .enter().append("g")
+        .attr("class", "dimension")
+        .attr("transform", function(d) { return "translate(" + x(d.abbr) + ")"; });
+
+    pc1.svg.append("g")
+        .attr("class", "background")
+        .selectAll("path")
         .data(data)
-        .enter()
-        .append("table");
+        .enter().append("path")
+        .attr("d", draw);
+
+    pc1.svg.append("g")
+        .attr("class", "foreground")
+        .selectAll("path")
+        .data(data)
+        .enter().append("path")
+        .attr("d", draw);
+
+    var projection = pc1.svg.selectAll(".background path,.foreground path")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout);
+
+    function mouseover(d) {
+        pc1.svg.classed("active", true);
+        projection.classed("inactive", function(p) { return p !== d; });
+        projection.filter(function(p) { return p === d; }).each(moveToFront);
+    }
+
+    function mouseout(d) {
+        pc1.svg.classed("active", false);
+        projection.classed("inactive", false);
+    }
+
+    function moveToFront() {
+        this.parentNode.appendChild(this);
+    }
+
+    function draw(d) {
+        return line(g_data.map(function(dimension) {
+            return [xScale(dimension.abbr), yScale(dimension.abbr)];
+        }));
+    }
+*/
+/*end new code for highlighting*/
 
     var explore_count = 0;
     var exploring = {};
     var explore_start = false;
+
     pc1.svg
         .selectAll(".dimension")
         .style("cursor", "pointer")
@@ -104,7 +159,7 @@ d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
             event.preventDefault();
             if (exploring[d]) d3.timer(explore(d,explore_count));
         });
-
+    
     function explore(dimension,count) {
         if (!explore_start) {
             explore_start = true;
