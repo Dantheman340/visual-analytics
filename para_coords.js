@@ -161,7 +161,7 @@ d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
         });
 
     pc1.svg
-        .selectAll(".dimension")
+        .selectAll(".background path")
         .on("mouseover",function(d){console.log(d)});
 
 
