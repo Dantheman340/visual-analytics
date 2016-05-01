@@ -91,62 +91,6 @@ d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
 
     initializeGraph();
 
-/*begin new code for highlighting*/
-/*
-    var line = d3.svg.line()
-        .defined(function(d) { return !isNaN(d[1]); });
-
-    var x = d3.scale.ordinal()
-        .domain(g_data.map(function(d) { return d.name; }))
-        .range([0, width]);
-
-    var dimension = pc1.svg.selectAll(".dimension")
-        .data(g_data)
-        .enter().append("g")
-        .attr("class", "dimension")
-        .attr("transform", function(d) { return "translate(" + x(d.abbr) + ")"; });
-
-    pc1.svg.append("g")
-        .attr("class", "background")
-        .selectAll("path")
-        .data(data)
-        .enter().append("path")
-        .attr("d", draw);
-
-    pc1.svg.append("g")
-        .attr("class", "foreground")
-        .selectAll("path")
-        .data(data)
-        .enter().append("path")
-        .attr("d", draw);
-
-    var projection = pc1.svg.selectAll(".background path,.foreground path")
-        .on("mouseover", mouseover)
-        .on("mouseout", mouseout);
-
-    function mouseover(d) {
-        pc1.svg.classed("active", true);
-        projection.classed("inactive", function(p) { return p !== d; });
-        projection.filter(function(p) { return p === d; }).each(moveToFront);
-    }
-
-    function mouseout(d) {
-        pc1.svg.classed("active", false);
-        projection.classed("inactive", false);
-    }
-
-    function moveToFront() {
-        this.parentNode.appendChild(this);
-    }
-
-    function draw(d) {
-        return line(g_data.map(function(dimension) {
-            return [xScale(dimension.abbr), yScale(dimension.abbr)];
-        }));
-    }
-*/
-/*end new code for highlighting*/
-
     var explore_count = 0;
     var exploring = {};
     var explore_start = false;
