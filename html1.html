@@ -15,9 +15,24 @@
         shape-rendering: crispEdges;
     }
 
+    #title {
+        font: 12px sans-serif;
+        color: darkblue;
+        text-align:left;
+        font-weight:bold;
+        position: relative;
+        left: 400px;
+    }
+
 </style>
 </head>
 <body>
+
+<div id="title">
+    Baseball Bubbles
+</div>
+<br>
+
 <div id="plot"></div>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script>
@@ -183,8 +198,8 @@
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
-                .attr("cx", function(d) { return x(d.R); })
-                .attr("cy", function(d) { return y(d.pR); })
+                .attr("cx", function(d) { return x(d.RperG); })
+                .attr("cy", function(d) { return y(d.RunsAgperG); })
                 .style("fill", function(d) { return color(cValue(d));})
 
                 .on("mouseover", function(d) {
@@ -193,7 +208,6 @@
                     tooltip.transition()
                         .duration(200)
                         .style("opacity", .9);
-                        console.log(d["PayKey"]);
                     tooltip.html(d["PayKey"] + "<br/> (" + xValue(d)
                                 + ", " + yValue(d) + ")")
                         .style("left", (d3.event.pageX + 5) + "px")
@@ -267,7 +281,7 @@ Y-Axis:
     <option value="pFIP" >Fielding Independent Pitching</option>
 </select>
 
-<button onclick="animator();" type="button" >Animate</button>
+<button onclick="simpleAnimateLoop();" type="button" >Animate</button>
 <button onclick="reset();" type="button" >Reset</button>
 <br>
 
@@ -304,9 +318,80 @@ Y-Axis:
                // .attr("fill","red");
     }
 
-    function animator() {
+    function split(year) {
+        var subset = svg.selectAll("circle")
+                .filter(function (d) {
+                    return d.Year == year
+                });
+        console.log(subset[0]);
+        return subset;
+    }
 
-/*        svg.selectAll("circle")
+
+
+    function animagic() {
+        svg.selectAll("circle")
+                .filter(function (d) {
+                    return d.Year == 1998
+                })
+                .transition()
+                .duration(500)
+                .ease("linear")
+                .style("opacity", "1")
+                .each("end",function() {
+                    svg.selectAll("circle")
+                            .filter(function(d) {
+                                return d.Year != 1998})
+                            .transition()
+                            .duration(500)
+                            .style("opacity",".1")
+                            });
+
+                }
+
+    function simpleAnimate() {
+        svg.selectAll("circle")
+                .filter(function (d) { return d.Year == 1998})
+                .transition()
+                .duration(1000)
+                .delay(0)
+                .style("opacity", "1");
+
+        svg.selectAll("circle")
+                .filter(function (d) { return d.Year != 1998})
+                .transition()
+                .duration(1000)
+                .delay(1000)
+                .style("opacity", ".2");
+
+                }
+
+    function simpleAnimateLoop() {
+
+        for (i=1998; i < 2016; i++) {
+            svg.selectAll("circle")
+                    .filter(function (d) {
+                        return d.Year == i
+                    })
+                    .transition()
+                    .duration(500)
+                    .delay(((i-1998)*1000))
+                    .style("opacity", "1");
+
+            svg.selectAll("circle")
+                    .filter(function (d) {
+                        return d.Year != i
+                    })
+                    .transition()
+                    .duration(500)
+                    .delay((i-1998)*1000)
+                    .style("opacity", ".1");
+        }
+
+    }
+
+
+    function animator() { /*        svg.selectAll("circle")
                 .transition()
                 .duration(500)
                 .attr("cx", xMap)
@@ -324,32 +409,62 @@ Y-Axis:
                     .style("opacity","1")
                     .style("fill", function(d){return color(cValue(d));}));
                 }
-*/
+*/          svg.selectAll("circle")
+                .style("opacity", "0");
+
+
         for (i=1998; i<2016; i++) {
             svg.selectAll("circle")
                     .transition()
-                    .duration(10)
+                    .duration(100)
+                    .delay(function(d,i) {return (i-1998)*600+ 200})
                     .ease("linear")
-                    .delay(function(d,i){return i*20})
                     .filter(function (d) {
-                      return d.Year != i;})
-                    .style("opacity",".1");
+                        return d.Year == i
+                    })
+                    .style("opacity", "1")
+                    .selectAll("circle")
+                    .transition(100)
+                    .delay(function(d,i) {return (i-1998) *600+ 200})
+                    .filter(function (d) {
+                        return d.Year != i
+                        })
+                    .style("opacity","1");
+            }
+         }
 
-            console.log(i);
 
+
+                    //.delay(function(d,i){return i*20})
+  /*                  .filter(function (d) {
+                        if (d.Year == i) {
+                        svg.selectAll("circle").style("opacity", "1");
+                            return d.Year == i;
+                        } else {
+                            svg.selectAll("circle").style("opacity", ".1");
+                            return d.Year != i;
+                        }
+                    });
+*/
+
+            //          return d.Year != i;})
+              //      .style("opacity",".1");
+
+            //console.log(i);
+/*
             svg.selectAll("circle")
                       .transition()
-                      .duration(10)
+                      .duration(100)
                       .ease("linear")
-                      .delay(function(d,i){return 10+i*20})
+                      .delay(function(d,i){return i*20})
                       .filter(function (d) {
                           return d.Year == i;})
                         //.style("fill", function(d){return color(cValue(d));})
-                        .style("opacity","1");}
-         //   });
+                     .style("opacity","1");}
+            }
      //       console.log(i);
 
-
+*/
 
         //for (i = 1998; i < 2016; i++) {
         //    If g_data[].Year === value;
@@ -363,14 +478,13 @@ Y-Axis:
     function yearfilter(d) {
             return g_data[d].Year == 1998;
         }
-    }
+
 
     function reset() {
         svg.selectAll("circle")
                 .style("opacity","1");
 
     }
-
 
 </script>
 
