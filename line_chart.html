@@ -31,17 +31,42 @@
     <div id="line"></div>
     <script src="js/line_chart.js"></script>
 
-    <div id = "dropdown_menu1" class="dropdown">
+    <div id = "dropdown_menu">
         <b>Selected Team 1:</b>
-    </div>
+        <select id="team_filter1" class="dropdown" onchange=changeTeam1(this.value)></select>
 
-    <div id = "dropdown_menu2" class="dropdown">
         <b>Selected Team 2:</b>
-    </div>
+        <select id="team_filter2" class="dropdown" onchange=changeTeam1(this.value)></select>
 
-    <div id = "dropdown_menu3" class="dropdown">
         <b>Selected Team 3:</b>
+        <select id="team_filter3" class="dropdown" onchange=changeTeam1(this.value)></select>
+
+        <b>Variable Selection:</b>
+        <select id="y_variable" class="y_variable_dropdown" onchange=change_y_variable(this.value)></select>
     </div>
 
+
+<script>
+    function changeTeam1(input){
+        var team = input;
+        selected_team1 = team;
+        console.log(selected_team1);
+    };
+    function changeTeam2(input){
+        var team = input;
+        selected_team2 = team;
+        console.log(selected_team2);
+    };
+    function changeTeam3(input){
+        var team = input;
+        selected_team3 = team;
+        console.log(selected_team3);
+    };
+    function change_y_variable(input){
+        var y_variable = input;
+        selected_y_variable = y_variable;
+        console.log(selected_y_variable);
+    };
+</script>
 </body>
 </html>

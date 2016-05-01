@@ -3,6 +3,10 @@ Ideas:
     Filter 3 different datasets based on user selected team names
 
 */
+var selected_team1 = "ARI",
+    selected_team2 = "NYY",
+    selected_team3 = "NYM",
+    selected_y_variable = "HR";
 
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
@@ -32,9 +36,7 @@ var line = d3.svg.line()
         return y(d.count);
     });
 
-//var team_1 = document.getElementById("dropdown_menu1").value,
-//    team_2 = document.getElementById("dropdown_menu2").value,
-//    team_3 = document.getElementById("dropdown_menu3").value;
+
 
 var svg = d3.select("#line").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -46,16 +48,19 @@ var dataYear = function (d) {
     return +d.Year;
 };
 
-var new_data = [[], []];
+var new_data = [[], [],[]];
 //var new_data = [[], [], []];
-var focus = svg.append("g")
-    .style("display", "none");
 
+var g_data;
+var y_values;
 
 d3.csv("data/BaseballData.csv", function (error, data) {
     if (error) throw error;
 
+    var headerNames = d3.keys(data[0])
+
     var baseballdata = [];
+
     data.forEach(function (d) {
         if (baseballdata[d.Year] != undefined) {
             for(i = min_year; i < max_year; i++){
@@ -73,7 +78,24 @@ d3.csv("data/BaseballData.csv", function (error, data) {
         }
     });
 
-    console.log(baseballdata);
+    var team1_data = [];
+
+    data.forEach(function (d) {
+        if (team1_data[d.Year] != undefined && d.Abbrev == selected_team1) {
+            team1_data[d.Year].HR += +d.HR;
+            team1_data[d.Year].Abbrev = d.Abbrev;
+        }
+        else if (d.Abbrev == selected_team1) {
+            team1_data[d.Year] = [];
+            team1_data[d.Year].year = d.Year;
+            team1_data[d.Year].HR = +d.HR;
+            team1_data[d.Year].Abbrev = d.Abbrev;
+        }
+    });
+
+
+    g_data = data;
+    console.log(team1_data);
     var max_year = d3.max(data, dataYear);
     var min_year = d3.min(data, dataYear) - 1;
 
@@ -131,9 +153,8 @@ d3.csv("data/BaseballData.csv", function (error, data) {
         .style("text-anchor", "end")
         .text("Home Runs");
 
+//dropdowns for team selection
     var dropDown = d3.selectAll(".dropdown")
-        .append("select")
-        .attr("name", "team_list");
 
     var options = dropDown.selectAll("option")
         .data(data.filter(function(d){
@@ -147,11 +168,23 @@ d3.csv("data/BaseballData.csv", function (error, data) {
         .text(function (d) { return d.Abbrev;})
         .attr("value", function (d) {return d.Abbrev;});
 
-    d3.select()
+//dropdown for Y-axis variable
+    var y_variable = d3.selectAll(".y_variable_dropdown")
 
-    var color = ["steelblue", "red"];
+    var y_variable_options = y_variable.selectAll("option")
+        .data(d3.keys(data[0]))
+        .enter()
+        .append("option")
+
+    y_variable_options
+        .text(function (d) {return d;})
+        .attr("value", function (d) {return d;});
+
+//color and name
+    var color = ["steelblue", "red", "green"];
     var name = ["team", "number of Home Runs", "something else"];
 
+// Creates lines
     for (var i = 0; i < 2; i++) {
         svg.append("path")
             .datum(new_data[i])
