@@ -159,7 +159,12 @@ d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
             event.preventDefault();
             if (exploring[d]) d3.timer(explore(d,explore_count));
         });
-    
+
+    pc1.svg
+        .selectAll(".dimension")
+        .on("mouseover",function(d){console.log(d)});
+
+
     function explore(dimension,count) {
         if (!explore_start) {
             explore_start = true;
