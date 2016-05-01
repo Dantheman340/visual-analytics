@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+
+    <style>
+
+    body {
+        font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    #fredtitle {
+        font: 12px sans-serif;
+        color: darkblue;
+        text-align:left;
+        font-weight:bold;
+        position: relative;
+        left: 400px;
+    }
+
+    #dantitle {
+
+    }
+
+    </style>
+
+    <meta charset="UTF-8">
+    <title>Baseball Team Analytics Toolset</title>
+    <link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
+    <link rel="stylesheet" type="text/css" href="css/para_coords.css">
+</head>
+
+<body>
+<script src="para_coords.js"></script>
+<script src="js/d3.parcoords.js"></script>
+
+<div id="dantitle"></div>
+
+<div id="title" class="title">MLB parallel coordinate graph<br></div>
+
+<div id="para_coords" class="parcoords" style="width:1300px;height:350px"></div>
+
+<div id = "filters">
+    <b>Year:</b>
+    <select onchange="changeYear(this.value);" id="year_filter">
+        <option value="All" selected>All years</option>
+        <option value="2015">2015</option>
+        <option value="2014">2014</option>
+        <option value="2013">2013</option>
+        <option value="2012">2012</option>
+        <option value="2011">2011</option>
+        <option value="2010">2010</option>
+        <option value="2009">2009</option>
+        <option value="2008">2008</option>
+        <option value="2007">2007</option>
+        <option value="2006">2006</option>
+        <option value="2005">2005</option>
+        <option value="2004">2004</option>
+        <option value="2003">2003</option>
+        <option value="2002">2002</option>
+        <option value="2001">2001</option>
+        <option value="2000">2000</option>
+        <option value="1999">1999</option>
+        <option value="1998">1998</option>
+    </select>
+
+    <b>Gradient variable:</b>
+    <select onchange="changeGradient(this.value);" id="gradient_filter">
+        <option value="HR" selected>HR</option>
+        <option value="SO">SO</option>
+        <option value="OBP">OBP</option>
+        <option value="SLG">SLG</option>
+        <option value="pFIP">pFIP</option>
+        <option value="RegSeasonW">RegSeasonW</option>
+        <option value="Payroll">Payroll</option>
+    </select>
+</div>
+
+<div id="team-list"></div>
+<br><br>
+
+<div id="fredtitle">
+    Baseball Bubbles
+</div>
+
+<div id="fredplot"></div>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="js/bubbles.js"></script>
+
+X-Axis:
+<select onchange="changeXAxis(this.value);">
+    <option value="RperG" selected>Runs Scored per game</option>
+    <option value="RunsAgperG" >Runs Allowed per game</option>
+    <option value="SO" >Strikeouts-Batting</option>
+    <option value="pSO" >Strikeouts-Pitching</option>
+    <option value="BatAge" >Average Batter Age(weighted)</option>
+    <option value="HR" >Home Runs</option>
+    <option value="OPSplus" >On Base + Slugging (Park adjusted, standardized)</option>
+    <option value="PAge" >Average Pitcher Age(weighted)</option>
+    <option value="ERA" >Earned Run Average</option>
+    <option value="pFIP" >Fielding Independent Pitching</option>
+</select>
+Y-Axis:
+<select onchange="changeYAxis();" id="yAxisMenu">
+    <option value="RperG" selected>Runs Scored per game</option>
+    <option value="RunsAgperG" >Runs Allowed per game</option>
+    <option value="SO" >Strikeouts-Batting</option>
+    <option value="pSO" >Strikeouts-Pitching</option>
+    <option value="BatAge" >Average Batter Age(weighted)</option>
+    <option value="HR" >Home Runs</option>
+    <option value="OPSplus" >On Base + Slugging (Park adjusted, standardized)</option>
+    <option value="PAge" >Average Pitcher Age(weighted)</option>
+    <option value="ERA" >Earned Run Average</option>
+    <option value="pFIP" >Fielding Independent Pitching</option>
+</select>
+
+<button onclick="simpleAnimateLoop();" type="button" >Animate</button>
+<button onclick="reset();" type="button" >Reset</button>
+
+<script>
+
+    function changeYear(input){
+        var year = input;
+        selected_year = year;
+        console.log(selected_year);
+        d3.select("#para_coords").html("");
+        initializeGraph();
+    }
+
+    function changeGradient(input){
+        gradient_selected = input;
+        initializeGraph();
+    }
+</script>
+
+
+<script>
+    function changeXAxis(elem) {
+        console.log(elem);
+        // d3.select("#xlabel").text(elem);
+        xLabel = elem;
+        xScale.domain([d3.min(g_data, xValue) -.5, d3.max(g_data, xValue) +.5]);
+        svg.selectAll(".x.axis")
+                .call(xAxis).select(".label").text(xLabel);
+        changePos();
+    }
+
+    function changeYAxis(){
+        var a = document.getElementById("yAxisMenu").value;
+        console.log(a);
+        yLabel = a;
+        // d3.select("#ylabel").text(x);
+        yScale.domain([d3.min(g_data, yValue) -.5, d3.max(g_data, yValue) +.5]);
+        svg.selectAll(".y.axis")
+                .call(yAxis).select(".label").text(yLabel);
+        changePos();
+    }
+    function changePos(){
+        svg.selectAll("circle")
+                .transition()
+                .duration(500)
+                .attr("cx", xMap)
+                .attr("cy", yMap)
+                .attr("r", function(d){return (d.Payroll/10000000)})
+                .attr("stroke","black")
+                .attr("stroke-width", "2");
+        // .attr("fill","red");
+    }
+
+    function split(year) {
+        var subset = svg.selectAll("circle")
+                .filter(function (d) {
+                    return d.Year == year
+                });
+        console.log(subset[0]);
+        return subset;
+    }
+    function simpleAnimate() {
+        svg.selectAll("circle")
+                .filter(function (d) { return d.Year == 1998})
+                .transition()
+                .duration(1000)
+                .delay(0)
+                .style("opacity", "1");
+
+        svg.selectAll("circle")
+                .filter(function (d) { return d.Year != 1998})
+                .transition()
+                .duration(1000)
+                .delay(1000)
+                .style("opacity", ".2");
+
+    }
+
+    function simpleAnimateLoop() {
+
+        for (i=1998; i < 2016; i++) {
+            svg.selectAll("circle")
+                    .filter(function (d) {
+                        return d.Year == i
+                    })
+                    .transition()
+                    .duration(500)
+                    .delay(((i-1998)*1000))
+                    .style("opacity", "1");
+
+            svg.selectAll("circle")
+                    .filter(function (d) {
+                        return d.Year != i
+                    })
+                    .transition()
+                    .duration(500)
+                    .delay((i-1998)*1000)
+                    .style("opacity", ".1");
+        }
+
+    }
+
+    function yearfilter(d) {
+        return g_data[d].Year == 1998;
+    }
+
+
+    function reset() {
+        svg.selectAll("circle")
+                .style("opacity","1");
+
+    }
+
+</script>
+
+
+</body>
+
+
+</html>
