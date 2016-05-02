@@ -51,22 +51,33 @@
         var team = input;
         selected_team1 = team;
         console.log(selected_team1);
+//        d3.select("#line").html("");
     };
+
     function changeTeam2(input){
         var team = input;
         selected_team2 = team;
         console.log(selected_team2);
     };
+
     function changeTeam3(input){
         var team = input;
         selected_team3 = team;
         console.log(selected_team3);
     };
+
     function change_y_variable(input){
         var y_variable = input;
         selected_y_variable = y_variable;
-        console.log(selected_y_variable);
+        console.log(new_data);
+        y.domain(d3.extent(new_data, function(d) { return d[y_variable]; }));
+        svg.selectAll(".y.axis").call(yAxis).select(".label").text(y_variable);
+        svg.selectAll(".line")
+                .transition()
+                .duration(500)
+                .attr("d", line).style("stroke", color);
     };
+
 </script>
 </body>
 </html>
