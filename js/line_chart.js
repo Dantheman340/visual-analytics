@@ -6,7 +6,7 @@ TODO: maybe need to create a refresh function
 var selected_team1 = "ARI",
     selected_team2 = "NYY",
     selected_team3 = "NYM",
-    selected_y_variable = "RperG",
+    selected_y_variable = "Payroll",
     margin = {top: 20, right: 20, bottom: 30, left: 70},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -48,11 +48,6 @@ var dataYear = function (d) {
 var new_data = [[], [],[]];
 
 var g_data;
-
-function refresh_data(){
-
-};
-
 
 d3.csv("data/BaseballData.csv", function (error, data) {
     if (error) throw error;
@@ -117,9 +112,9 @@ d3.csv("data/BaseballData.csv", function (error, data) {
         var tmp2 = [];
         var tmp3 = [];
 
-          tmp1.date = parseDate(i + ""); //adds date to tmp1
-          tmp2.date = parseDate(i + "");
-          tmp3.date = parseDate(i + "");
+        tmp1.date = parseDate(i + ""); //adds date to tmp1
+        tmp2.date = parseDate(i + "");
+        tmp3.date = parseDate(i + "");
 
         if (team1_data[i] != undefined && team2_data[i] != undefined && team3_data[i] != undefined) {
             tmp1.value = team1_data[i].value; //adds count to temp1
@@ -163,7 +158,6 @@ d3.csv("data/BaseballData.csv", function (error, data) {
     y.domain(d3.extent(axis_data, function (d) {
         return d.value;
     }));
-
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")

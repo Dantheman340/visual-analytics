@@ -69,13 +69,7 @@
     function change_y_variable(input){
         var y_variable = input;
         selected_y_variable = y_variable;
-        console.log(new_data);
-        y.domain(d3.extent(new_data, function(d) { return d[y_variable]; }));
-        svg.selectAll(".y.axis").call(yAxis).select(".label").text(y_variable);
-        svg.selectAll(".line")
-                .transition()
-                .duration(500)
-                .attr("d", line).style("stroke", color);
+        create_chart();
     };
 
 </script>
