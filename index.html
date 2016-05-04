@@ -5,14 +5,12 @@
     <meta charset="UTF-8">
     <title>Baseball Team Analytics Toolset</title>
     <script src="//d3js.org/d3.v3.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
     <link rel="stylesheet" type="text/css" href="css/final_styles.css">
 </head>
 
 <body>
 
 <div id="large_title">MLB Visualization Project</div>
-
 
 <!---  Parallel Coordinates --->
 
@@ -77,13 +75,13 @@
 
 </script>
 
-
 <!---  Bubble Chart --->
+
 <div class = "separator"></div>
 <div id="fred_title" class="title">Baseball Bubbles</div>
 <div class = "separator"></div>
 <div id="fred_plot"><script src="js/bubbles.js"></script></div>
-
+<div class = "separator"></div>
 <div id="fred_options" class="drop_down">
     <b>X-Axis:</b>
     <select onchange="changeXAxis(this.value);">
@@ -122,9 +120,9 @@
         console.log(input);
         xLabel = input;
         xScale.domain([d3.min(g_data, xValue) -.5, d3.max(g_data, xValue) +.5]);
-        bubble_svg.selectAll(".bubble_x_axis")
+        bubble_svg.selectAll(".x.axis")
                 .call(xAxis)
-                .select(".Xlabel")
+                .select(".label")
                 .text(xLabel);
         changePos();
     }
@@ -134,9 +132,9 @@
         console.log(a);
         yLabel = a;
         yScale.domain([d3.min(g_data, yValue) -.5, d3.max(g_data, yValue) +.5]);
-        bubble_svg.selectAll(".bubble_y_axis")
+        bubble_svg.selectAll(".y.axis")
                 .call(yAxis)
-                .select(".Ylabel")
+                .select(".label")
                 .text(yLabel);
         changePos();
     }
@@ -149,7 +147,6 @@
                 .attr("r", function(d){return (d.Payroll/10000000)})
                 .attr("stroke","black")
                 .attr("stroke-width", "2");
-        // .attr("fill","red");
     }
 
     function split(year) {
@@ -213,13 +210,15 @@
     }
 </script>
 
-
 <!---  Line Chart --->
+
 <div class = "separator"></div>
 <div id="line_title" class="title">Line Chart<br></div>
 <div class = "separator"></div>
 <div id="line"></div>
 <script src="js/line_chart.js"></script>
+
+<div class = "separator"></div>
 
 <div id = "dropdown_menu" class = "drop_down">
     <b>Selected Team 1:</b>
