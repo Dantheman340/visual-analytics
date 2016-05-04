@@ -2,19 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Parallel Coordinates Tool</title>
+    <title>Parallel Coordinates</title>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
-    <link rel="stylesheet" type="text/css" href="css/para_coords.css">
+    <link rel="stylesheet" type="text/css" href="css/final_styles.css">
 </head>
 <body>
 
-<script src="para_coords.js"></script>
+<script src="js/para_coords.js"></script>
 <script src="js/d3.parcoords.js"></script>
 
-<div id="title" class="title">MLB parallel coordinate graph<br></div>
-
-<div id="para_coords" class="parcoords" style="width:1300px;height:350px"></div>
+<div id="para_coords" class="parcoords"></div>
 
 <div id = "filters">
 <b>Year:</b>
@@ -51,8 +49,6 @@
     <option value="Payroll">Payroll</option>
 </select>
 </div>
-
-<div id="team-list"></div>
 
 <script>
 

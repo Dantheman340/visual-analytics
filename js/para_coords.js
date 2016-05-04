@@ -1,14 +1,14 @@
 /**
  * Created by Dan J. on 4/24/2016.
  */
-// gradstop.js - color gradients!
-//initializing variables
+
 var g_data,
     pc1,
     selected_year = "All",
     gradient_selected = "HR",
-    width = 1300,
-    height = 350;
+    margin = {top: 20, right: 40, bottom: 30, left: 70},
+    width = 1300 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
 //color scale variable for gradient
 var color_scale = d3.scale.linear(),
@@ -55,7 +55,7 @@ function maxVal(){
 
 //creates parallel coordinate visualization
 function loadParset(){
-    pc1 = d3.parcoords()("#para_coords")
+        pc1 = d3.parcoords()("#para_coords")
         .data(g_data.filter(function(d){
             if(selected_year === "All") {
                 return d

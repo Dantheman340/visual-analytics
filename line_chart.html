@@ -2,30 +2,9 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>DSBA5122 d3 mouse example</title>
+    <title>Line Chart</title>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <style>
-        body {
-            font: 10px sans-serif;
-        }
-
-        .axis path,
-        .axis line {
-            fill: none;
-            stroke: #000;
-            shape-rendering: crispEdges;
-        }
-
-        .line {
-            fill: none;
-            stroke-width: 2px;
-        }
-
-        .title{
-            font: 12px sans-serif;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/final_styles.css">
 </head>
 <body>
     <div id="line"></div>
@@ -36,40 +15,45 @@
         <select id="team_filter1" class="dropdown" onchange=changeTeam1(this.value)></select>
 
         <b>Selected Team 2:</b>
-        <select id="team_filter2" class="dropdown" onchange=changeTeam1(this.value)></select>
+        <select id="team_filter2" class="dropdown" onchange=changeTeam2(this.value)></select>
 
         <b>Selected Team 3:</b>
-        <select id="team_filter3" class="dropdown" onchange=changeTeam1(this.value)></select>
+        <select id="team_filter3" class="dropdown" onchange=changeTeam3(this.value)></select>
 
         <b>Variable Selection:</b>
         <select id="y_variable" class="y_variable_dropdown" onchange=change_y_variable(this.value)></select>
     </div>
-
 
 <script>
     function changeTeam1(input){
         var team = input;
         selected_team1 = team;
         console.log(selected_team1);
-//        d3.select("#line").html("");
+        selected_teams[0] = selected_team1;
+        redraw_chart();
     };
 
     function changeTeam2(input){
         var team = input;
         selected_team2 = team;
         console.log(selected_team2);
+        selected_teams[1] = selected_team2;
+        redraw_chart();
     };
 
     function changeTeam3(input){
         var team = input;
         selected_team3 = team;
         console.log(selected_team3);
+        selected_teams[2] = selected_team3;
+        redraw_chart();
     };
 
     function change_y_variable(input){
         var y_variable = input;
         selected_y_variable = y_variable;
-        create_chart();
+        console.log(selected_y_variable);
+        redraw_chart();
     };
 
 </script>

@@ -1,0 +1,75 @@
+body {
+    font: 10px sans-serif;
+}
+
+.axis path,
+
+.axis line{
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+#large_title{
+    font: 26px sans-serif;
+    font-weight: bold;
+    text-align: center;
+    background-color: lightblue;
+    border-style: solid;
+}
+
+.line{
+    fill: none;
+    stroke-width: 2px;
+}
+
+.title{
+    font: 12px sans-serif;
+    font-weight: bold;
+    text-align: left;
+    width: 1300px;
+    border-style: solid;
+}
+
+/*
+#fred_title {
+    font: 12px sans-serif;
+    color: green;
+    text-align:left;
+    font-weight:bold;
+    position: relative;
+    border-style: solid;
+}
+#dan_title {
+    font: 12px sans-serif;
+    color: green;
+    text-align:left;
+    font-weight:bold;
+    position: relative;
+    border-style: solid;
+}
+*/
+
+#para_coords {
+    width: 1300px;
+    height: 400px;
+    border-style: solid;
+}
+
+#line {
+    width: 1300px;
+    height: 400px;
+    border-style: solid;
+}
+
+#fred_plot {
+    width: 1300px;
+    height: 400px;
+    border-style: solid;
+}
+
+.drop_down {
+    background-color: yellowgreen;
+    width: 1300px;
+    border-style: solid;
+}

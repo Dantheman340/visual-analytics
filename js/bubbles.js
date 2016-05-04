@@ -6,6 +6,7 @@
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
+
 // setup x
 var xLabel = "RperG";
 var xValue = function(d) { return d[xLabel];}, // data -> value
@@ -187,8 +188,6 @@ d3.csv("data/BaseballData.csv", function(error, data) {
                 .duration(500)
                 .style("opacity", 0);
         })
-
-
 
     //  .attr("r", function(d){return (d.Payroll/10000000)})
     //  .attr("stroke","black")

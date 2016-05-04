@@ -1,53 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="//d3js.org/d3.v3.min.js"></script>
-
-    <style>
-
-    body {
-        font: 10px sans-serif;
-    }
-
-    .axis path,
-    .axis line {
-        fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
-    }
-
-    #fredtitle {
-        font: 12px sans-serif;
-        color: darkblue;
-        text-align:left;
-        font-weight:bold;
-        position: relative;
-        left: 400px;
-    }
-
-    #dantitle {
-
-    }
-
-    </style>
 
     <meta charset="UTF-8">
     <title>Baseball Team Analytics Toolset</title>
+    <script src="//d3js.org/d3.v3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
-    <link rel="stylesheet" type="text/css" href="css/para_coords.css">
+    <link rel="stylesheet" type="text/css" href="css/final_styles.css">
 </head>
 
 <body>
-<script src="para_coords.js"></script>
+
+<div id="large_title">MLB Visualization Project</div>
+
+
+<!---  Parallel Coordinates --->
+
+<script src="js/para_coords.js"></script>
 <script src="js/d3.parcoords.js"></script>
 
-<div id="dantitle"></div>
+<div id="dan_title" class="title">Parallel Coordinates<br></div>
 
-<div id="title" class="title">MLB parallel coordinate graph<br></div>
+<div id="para_coords" class="parcoords"></div>
 
-<div id="para_coords" class="parcoords" style="width:1300px;height:350px"></div>
-
-<div id = "filters">
+<div id="dan_options" class ="drop_down">
     <b>Year:</b>
     <select onchange="changeYear(this.value);" id="year_filter">
         <option value="All" selected>All years</option>
@@ -83,47 +59,49 @@
     </select>
 </div>
 
-<div id="team-list"></div>
-<br><br>
 
-<div id="fredtitle">
+
+<!---  Bubble Chart --->
+
+<div id="fred_title" class="title">
     Baseball Bubbles
 </div>
 
-<div id="fredplot"></div>
-<script src="//d3js.org/d3.v3.min.js"></script>
-<script src="js/bubbles.js"></script>
+<div id="fred_plot">
+    <script src="js/bubbles.js"></script>
+</div>
 
-X-Axis:
-<select onchange="changeXAxis(this.value);">
-    <option value="RperG" selected>Runs Scored per game</option>
-    <option value="RunsAgperG" >Runs Allowed per game</option>
-    <option value="SO" >Strikeouts-Batting</option>
-    <option value="pSO" >Strikeouts-Pitching</option>
-    <option value="BatAge" >Average Batter Age(weighted)</option>
-    <option value="HR" >Home Runs</option>
-    <option value="OPSplus" >On Base + Slugging (Park adjusted, standardized)</option>
-    <option value="PAge" >Average Pitcher Age(weighted)</option>
-    <option value="ERA" >Earned Run Average</option>
-    <option value="pFIP" >Fielding Independent Pitching</option>
-</select>
-Y-Axis:
-<select onchange="changeYAxis();" id="yAxisMenu">
-    <option value="RperG" selected>Runs Scored per game</option>
-    <option value="RunsAgperG" >Runs Allowed per game</option>
-    <option value="SO" >Strikeouts-Batting</option>
-    <option value="pSO" >Strikeouts-Pitching</option>
-    <option value="BatAge" >Average Batter Age(weighted)</option>
-    <option value="HR" >Home Runs</option>
-    <option value="OPSplus" >On Base + Slugging (Park adjusted, standardized)</option>
-    <option value="PAge" >Average Pitcher Age(weighted)</option>
-    <option value="ERA" >Earned Run Average</option>
-    <option value="pFIP" >Fielding Independent Pitching</option>
-</select>
+<div id="fred_options" class="drop_down">
+    X-Axis:
+    <select onchange="changeXAxis(this.value);">
+        <option value="RperG" selected>Runs Scored per game</option>
+        <option value="RunsAgperG" >Runs Allowed per game</option>
+        <option value="SO" >Strikeouts-Batting</option>
+        <option value="pSO" >Strikeouts-Pitching</option>
+        <option value="BatAge" >Average Batter Age(weighted)</option>
+        <option value="HR" >Home Runs</option>
+        <option value="OPSplus" >On Base + Slugging (Park adjusted, standardized)</option>
+        <option value="PAge" >Average Pitcher Age(weighted)</option>
+        <option value="ERA" >Earned Run Average</option>
+        <option value="pFIP" >Fielding Independent Pitching</option>
+    </select>
+    Y-Axis:
+    <select onchange="changeYAxis();" id="yAxisMenu">
+        <option value="RperG" selected>Runs Scored per game</option>
+        <option value="RunsAgperG" >Runs Allowed per game</option>
+        <option value="SO" >Strikeouts-Batting</option>
+        <option value="pSO" >Strikeouts-Pitching</option>
+        <option value="BatAge" >Average Batter Age(weighted)</option>
+        <option value="HR" >Home Runs</option>
+        <option value="OPSplus" >On Base + Slugging (Park adjusted, standardized)</option>
+        <option value="PAge" >Average Pitcher Age(weighted)</option>
+        <option value="ERA" >Earned Run Average</option>
+        <option value="pFIP" >Fielding Independent Pitching</option>
+    </select>
 
 <button onclick="simpleAnimateLoop();" type="button" >Animate</button>
 <button onclick="reset();" type="button" >Reset</button>
-
+</div>
 <script>
 
     function changeYear(input){
@@ -138,10 +116,7 @@ Y-Axis:
         gradient_selected = input;
         initializeGraph();
     }
-</script>
 
-
-<script>
     function changeXAxis(elem) {
         console.log(elem);
         // d3.select("#xlabel").text(elem);
@@ -233,11 +208,61 @@ Y-Axis:
                 .style("opacity","1");
 
     }
-
 </script>
 
 
+<!---  Line Chart (Commented out for now)
+
+<div id="line"></div>
+<script src="js/line_chart.js"></script>
+
+<div id = "dropdown_menu" class = "drop_down">
+    <b>Selected Team 1:</b>
+    <select id="team_filter1" class="dropdown" onchange=changeTeam1(this.value)></select>
+
+    <b>Selected Team 2:</b>
+    <select id="team_filter2" class="dropdown" onchange=changeTeam2(this.value)></select>
+
+    <b>Selected Team 3:</b>
+    <select id="team_filter3" class="dropdown" onchange=changeTeam3(this.value)></select>
+
+    <b>Variable Selection:</b>
+    <select id="y_variable" class="y_variable_dropdown" onchange=change_y_variable(this.value)></select>
+</div>
+
+<script>
+    function changeTeam1(input){
+        var team = input;
+        selected_team1 = team;
+        console.log(selected_team1);
+        selected_teams[0] = selected_team1;
+        redraw_chart();
+    };
+
+    function changeTeam2(input){
+        var team = input;
+        selected_team2 = team;
+        console.log(selected_team2);
+        selected_teams[1] = selected_team2;
+        redraw_chart();
+    };
+
+    function changeTeam3(input){
+        var team = input;
+        selected_team3 = team;
+        console.log(selected_team3);
+        selected_teams[2] = selected_team3;
+        redraw_chart();
+    };
+
+    function change_y_variable(input){
+        var y_variable = input;
+        selected_y_variable = y_variable;
+        console.log(selected_y_variable);
+        redraw_chart();
+    };
+
+</script>
+--->
 </body>
-
-
 </html>
