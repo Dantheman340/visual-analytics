@@ -2,7 +2,7 @@
  * Created by Dan J. on 4/24/2016.
  */
 
-var g_data,
+var para_g_data,
     pc1,
     selected_year = "All",
     gradient_selected = "HR",
@@ -34,8 +34,8 @@ function create_color_scale(){
 //iterate through data based on user selected variable and find minimum value
 function minVal(){
     var minList = [];
-    for(i=0;i < g_data.length; i++){
-        minList.push(g_data[i][gradient_selected]);
+    for(i=0;i < para_g_data.length; i++){
+        minList.push(para_g_data[i][gradient_selected]);
     }
     var sortedList1 = minList.sort(function(a, b){return a-b});
     gradient_min = sortedList1[0];
@@ -45,8 +45,8 @@ function minVal(){
 //iterate through data based on user selected variable and find maximum value
 function maxVal(){
     var maxList = [];
-    for(i=0;i < g_data.length; i++){
-        maxList.push(g_data[i][gradient_selected]);
+    for(i=0;i < para_g_data.length; i++){
+        maxList.push(para_g_data[i][gradient_selected]);
     }
     var sortedList2 = maxList.sort(function(a, b){return b-a});
     gradient_max = sortedList2[0];
@@ -56,7 +56,7 @@ function maxVal(){
 //creates parallel coordinate visualization
 function loadParset(){
         pc1 = d3.parcoords()("#para_coords")
-        .data(g_data.filter(function(d){
+        .data(para_g_data.filter(function(d){
             if(selected_year === "All") {
                 return d
             }else{
@@ -87,7 +87,7 @@ d3.csv('data/BaseballData_ParaCoords.csv', function(data) {
         d.pFIP = +d.pFIP;
         });
 
-    g_data = data;
+    para_g_data = data;
 
     initializeGraph();
 

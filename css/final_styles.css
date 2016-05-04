@@ -1,3 +1,7 @@
+html {
+    background-color: white;
+}
+
 body {
     font: 10px sans-serif;
 }
@@ -24,31 +28,13 @@ body {
 }
 
 .title{
-    font: 12px sans-serif;
+    font: 18px sans-serif;
     font-weight: bold;
-    text-align: left;
+    text-align: center;
     width: 1300px;
     border-style: solid;
+    background-color: orange;
 }
-
-/*
-#fred_title {
-    font: 12px sans-serif;
-    color: green;
-    text-align:left;
-    font-weight:bold;
-    position: relative;
-    border-style: solid;
-}
-#dan_title {
-    font: 12px sans-serif;
-    color: green;
-    text-align:left;
-    font-weight:bold;
-    position: relative;
-    border-style: solid;
-}
-*/
 
 #para_coords {
     width: 1300px;
@@ -72,4 +58,9 @@ body {
     background-color: yellowgreen;
     width: 1300px;
     border-style: solid;
+}
+
+.separator{
+    height: 20px;
+    background-color: white;
 }

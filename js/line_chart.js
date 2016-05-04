@@ -5,9 +5,9 @@ var selected_team1 = "ARI",
     selected_team2 = "NYY",
     selected_team3 = "HOU",
     selected_y_variable = "HR",
-    margin = {top: 20, right: 40, bottom: 30, left: 70},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    margin = {top: 20, right: 70, bottom: 40, left: 70},
+    width = 1300 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
 var selected_teams = [selected_team1, selected_team2, selected_team3];
 
@@ -19,11 +19,11 @@ var x = d3.time.scale()
 var y = d3.scale.linear()
     .range([height, 0]);
 
-var xAxis = d3.svg.axis()
+var line_xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom");
 
-var yAxis = d3.svg.axis()
+var line_yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
@@ -56,7 +56,7 @@ var team1_data = [],
     tmp3 = [],
     axis_data = [],
     new_data = [[], [],[]],
-    g_data;
+    line_g_data;
 
 function redraw_chart(){
     refresh_data();
@@ -67,7 +67,7 @@ function update_lines(){
     y.domain(d3.extent(axis_data, function (d) {return d.selected_y_variable;}));
 
     svg.selectAll(".y.axis")
-        .call(yAxis)
+        .call(line_yAxis)
         .select(".label")
         .text(selected_y_variable);
 
@@ -96,7 +96,7 @@ function refresh_data(){
     //data for selected team #1
     team1_data = [];
 
-    g_data.forEach(function (d) {
+    line_g_data.forEach(function (d) {
         if (team1_data[d.Year] != undefined && d.Abbrev == selected_team1) {
             team1_data[d.Year].selected_y_variable += +d[selected_y_variable];
             team1_data[d.Year].teamname = d.Abbrev;
@@ -112,7 +112,7 @@ function refresh_data(){
     //data for selected team #2
     team2_data = [];
 
-    g_data.forEach(function (d) {
+    line_g_data.forEach(function (d) {
         if (team2_data[d.Year] != undefined && d.Abbrev == selected_team2) {
             team2_data[d.Year].selected_y_variable += +d[selected_y_variable];
             team2_data[d.Year].teamname = d.Abbrev;
@@ -128,7 +128,7 @@ function refresh_data(){
     //data for selected team #3
     team3_data = [];
 
-    g_data.forEach(function (d) {
+    line_g_data.forEach(function (d) {
         if (team3_data[d.Year] != undefined && d.Abbrev == selected_team3) {
             team3_data[d.Year].selected_y_variable += +d[selected_y_variable];
             team3_data[d.Year].teamname = d.Abbrev;
@@ -143,8 +143,8 @@ function refresh_data(){
     });
 
     //create min and max year variables
-    var max_year = d3.max(g_data, dataYear);
-    var min_year = d3.min(g_data, dataYear)-1;
+    var max_year = d3.max(line_g_data, dataYear);
+    var min_year = d3.min(line_g_data, dataYear)-1;
 
     new_data = [[], [],[]];
 
@@ -205,18 +205,20 @@ function refresh_data(){
 d3.csv("data/BaseballData.csv", function (error, data) {
     if (error) throw error;
 
-    g_data = data;
+    line_g_data = data;
 
     refresh_data();
     
     svg.append("g")
+        .attr("id","line_x_axis")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
+        .call(line_xAxis);
 
     svg.append("g")
+        .attr("id","line_y_axis")
         .attr("class", "y axis")
-        .call(yAxis)
+        .call(line_yAxis)
         .append("text")
         .attr("transform", "rotate(-90)")
         .attr("class", "label")

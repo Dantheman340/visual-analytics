@@ -2,10 +2,9 @@
  * Created by fred on 5/1/2016.
  */
 
-
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+var margin = {top: 20, right: 70, bottom: 40, left: 70},
+    width = 1300 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
 // setup x
 var xLabel = "RperG";
@@ -23,14 +22,14 @@ var yValue = function(d) { return d[yLabel];}, // data -> value
 
 
 // add the graph canvas to the body of the webpage
-var svgplot = d3.select("#plot").append("svgplot")
+var svgplot = d3.select("#fred_plot").append("svgplot")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // add the tooltip area to the webpage
-var tooltip = d3.select("#plot").append("div")
+var tooltip = d3.select("#fred_plot").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
@@ -40,7 +39,7 @@ var x = d3.scale.linear()
 var y = d3.scale.linear()
     .range([height, 0]);
 
-var svg = d3.select("body").append("svg")
+var bubble_svg = d3.select("#fred_plot").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -122,28 +121,16 @@ d3.csv("data/BaseballData.csv", function(error, data) {
         g_data= data;}
     );
 
-
-    //   xScale.domain([d3.min(g_data, xValue)-1, d3.max(g_data, xValue)+1]);
-    //   yScale.domain([d3.min(g_data, yValue)-1, d3.max(g_data, yValue)+1]);
-
-    console.log(g_data[1].Year);
-
-//    var g_filt = g_data.filter(yearfilter);
-//    console.log(g_filt[1].Year);
-
-//    function yearfilter(d) {
-//            return g_data[d].Year == 1998;
-//        }
-
     xScale.domain(d3.extent(data, function(d) { return d.RperG; })).nice();
     yScale.domain(d3.extent(data, function(d) { return d.RunsAgperG; })).nice();
 
-    svg.append("g")
+    bubble_svg.append("g")
+        .attr("id","bubble_x_axis")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
         .append("text")
-        .attr("class", "label")
+        .attr("class", "Xlabel")
         .attr("x", width)
         .attr("y", -6)
         .style("text-anchor", "end")
@@ -151,18 +138,19 @@ d3.csv("data/BaseballData.csv", function(error, data) {
 
 
 
-    svg.append("g")
+    bubble_svg.append("g")
+        .attr("id","bubble_y_axis")
         .attr("class", "y axis")
         .call(yAxis)
         .append("text")
-        .attr("class", "label")
+        .attr("class", "Ylabel")
         .attr("transform", "rotate(-90)")
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text(yLabel);
 
-    svg.selectAll(".dot")
+    bubble_svg.selectAll(".dot")
         .data(data)
         .enter().append("circle")
         .attr("class", "dot")
@@ -189,13 +177,9 @@ d3.csv("data/BaseballData.csv", function(error, data) {
                 .style("opacity", 0);
         })
 
-    //  .attr("r", function(d){return (d.Payroll/10000000)})
-    //  .attr("stroke","black")
-    //  .attr("stroke-width", "2");
-
     var leglabels = [ "Missed Playoffs", "Playoffs - LCS", "Playoffs - LDS", "Playoffs-Won World Series", "Lost World Series", "Playoffs - Wild Card"];
 
-    var legend = svg.selectAll(".legend")
+    var legend = bubble_svg.selectAll(".legend")
         .data(color.domain())
         .enter().append("g")
         .attr("class", "legend")
