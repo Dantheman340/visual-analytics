@@ -1,5 +1,6 @@
 /**
  * Created by Dan J. on 5/04/2016.
+ * Initial Code based on Line chart example by Isaac Cho.
  */
 var selected_team1 = "ARI",
     selected_team2 = "NYY",

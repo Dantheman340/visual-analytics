@@ -1,5 +1,6 @@
 /**
  * Created by fred on 5/1/2016.
+ * Initial Code based on Line chart example by Isaac Cho.
  */
 
 var margin = {top: 20, right: 70, bottom: 40, left: 70},
