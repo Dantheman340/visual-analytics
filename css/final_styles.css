@@ -1,5 +1,5 @@
 html {
-    background-color: white;
+    background-color: whitesmoke;
 }
 
 body {
@@ -15,7 +15,7 @@ body {
 }
 
 #large_title{
-    font: 26px sans-serif;
+    font: 30px sans-serif;
     font-weight: bold;
     text-align: center;
     background-color: lightblue;
@@ -34,13 +34,36 @@ body {
     text-align: center;
     width: 1300px;
     border-style: solid;
-    background-color: orange;
 }
 
 #para_coords {
     width: 1300px;
     height: 400px;
     border-style: solid;
+}
+
+#para_title{
+    background-color: yellow;
+}
+
+#para_options{
+    background-color: yellow;
+}
+
+#bubble_title{
+    background-color: yellowgreen;
+}
+
+#bubble_options{
+    background-color: yellowgreen;
+}
+
+#line_title{
+    background-color: orange;
+}
+
+#line_options{
+    background-color: orange;
 }
 
 #line {
@@ -56,14 +79,13 @@ body {
 }
 
 .drop_down {
-    background-color: yellowgreen;
     width: 1300px;
     border-style: solid;
 }
 
 .separator{
     height: 10px;
-    background-color: white;
+    background-color: whitesmoke;
 }
 
 .parcoords > svg, .parcoords > canvas {
@@ -113,4 +135,35 @@ body {
     -ms-user-select: none;
     user-select: none;
     background-color: white;
+}
+
+th{
+    font-size: 14px;
+    background-color: lightblue;
+}
+
+#credits {
+    font-size: 12px;
+    width: 200px;
+    border-style: dashed;
+    position: absolute;
+    top: 10px;
+    right:370px;
+    text-align: left;
+    font-weight: bold;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 28px;
+    padding: 2px;
+    font: 10px sans-serif;
+    background: black;
+    color: white;
+    font-weight:bold;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
 }

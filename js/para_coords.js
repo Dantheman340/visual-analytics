@@ -27,7 +27,7 @@ function initializeGraph(){
 function create_color_scale(){
     color_scale
         .domain([gradient_min,gradient_max])
-        .range(["red", "green"])
+        .range(["yellow", "blue"])
         .interpolate(d3.interpolateLab);
 }
 

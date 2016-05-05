@@ -10,7 +10,7 @@
 
 <body>
 
-<div id="large_title">MLB Visualization Project</div>
+<div id="large_title">Visual Analytics - Baseball Data Visualization Project</div>
 
 <!---  Parallel Coordinates --->
 
@@ -22,8 +22,9 @@
 <div class = "separator"></div>
 
 <div id="para_coords" class="parcoords"></div>
+<div class = "separator"></div>
 
-<div id="dan_options" class ="drop_down">
+<div id="para_options" class ="drop_down">
     <b>Year:</b>
     <select onchange="changeYear(this.value);" id="year_filter">
         <option value="All" selected>All years</option>
@@ -58,6 +59,7 @@
         <option value="Payroll">Payroll</option>
     </select>
 </div>
+
 <script>
 
     function changeYear(input){
@@ -78,11 +80,11 @@
 <!---  Bubble Chart --->
 
 <div class = "separator"></div>
-<div id="fred_title" class="title">Baseball Bubbles</div>
+<div id="bubble_title" class="title">Bubble Chart</div>
 <div class = "separator"></div>
 <div id="fred_plot"><script src="js/bubbles.js"></script></div>
 <div class = "separator"></div>
-<div id="fred_options" class="drop_down">
+<div id="bubble_options" class="drop_down">
     <b>X-Axis:</b>
     <select onchange="changeXAxis(this.value);">
         <option value="RperG" selected>Runs Scored per game</option>
@@ -220,7 +222,7 @@
 
 <div class = "separator"></div>
 
-<div id = "dropdown_menu" class = "drop_down">
+<div id = "line_options" class = "drop_down">
     <b>Selected Team 1:</b>
     <select id="team_filter1" class="dropdown" onchange=changeTeam1(this.value)></select>
 
@@ -267,6 +269,36 @@
     };
 
 </script>
+<div class = "separator"></div>
+<div id = "credits">
+    <table>
+        <tr>
+            <th>Project Completed by:</th>
+        </tr>
+        <tr>
+            <td>Daniel Joensen</td>
+        </tr>
+        <tr>
+            <td>Fred Frost</td>
+        </tr>
+        <tr>
+            <td>Munir Muhammad</td>
+        </tr>
+
+        <tr>
+            <th>For Class:</th>
+        </tr>
+        <tr>
+            <td>Visual Analytics: DSBA-5122-U91 </td>
+        </tr>
+        <tr>
+            <th>Date Completed:</th>
+        </tr>
+        <tr>
+            <td>May 4th 2016</td>
+        </tr>
+    </table>
+</div>
 
 </body>
 </html>

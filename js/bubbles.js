@@ -166,7 +166,7 @@ d3.csv("data/BaseballData.csv", function(error, data) {
                 .style("opacity", .9);
             tooltip.html(d["PayKey"] + "<br/> (" + xValue(d)
                     + ", " + yValue(d) + ")")
-                .style("left", (d3.event.pageX + 5) + "px")
+                .style("left", (d3.event.pageX + 10) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         })
         .on("mouseout", function(d) {
